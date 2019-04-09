@@ -1,0 +1,23 @@
+{
+  "name": "node-mysql-storefront",
+  "version": "1.0.0",
+  "description": "A command line based virtual store using Node and MySQL",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheRealCamarones/Node-MySQL-Storefront.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheRealCamarones/Node-MySQL-Storefront/issues"
+  },
+  "homepage": "https://github.com/TheRealCamarones/Node-MySQL-Storefront#readme",
+  "dependencies": {
+    "inquirer": "^6.2.2",
+    "mysql": "^2.16.0"
+  }
+}
