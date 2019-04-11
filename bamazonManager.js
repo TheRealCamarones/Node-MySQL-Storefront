@@ -58,6 +58,22 @@ function displayInventory() {
 ID: ${product.id} | ${product.product_name} | Price: ${product.price} | Quantity ${product.stock_quantity}`)
         })
     })
+    // end connection here for now, trying to decide how I want these all to move together
+    endConnection();
+}
+
+function lowInventory() {
+    // query the database for products with inventory less than 5
+    connection.query(`SELECT id, product_name, price, stock_quantity FROM products WHERE stock_quantity < 5`, function(err, res) {
+        if (err) throw err;
+        // run through results and display to the console
+        res.forEach(function(product) {
+            console.log(`
+------------------------------------------------------------------------------------------
+ID: ${product.id} | ${product.product_name} | Price: ${product.price} | Quantity ${product.stock_quantity}`)
+        })
+    })
+    // and then end the connection here for now while I decide how I want to have them move together
     endConnection();
 }
 
