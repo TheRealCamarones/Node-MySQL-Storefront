@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+var totalCost;
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -7,7 +8,7 @@ var connection = mysql.createConnection({
     port: 3306,
 
     user: "root",
-    password: "",
+    password: "potpourrigizmo",
     database: "bamazon"
 });
 
@@ -24,7 +25,7 @@ function start() {
             console.log(`
 ------------------------------------------------------------------------------------------
 ID: ${res[i].id} | ${res[i].product_name} | Price: ${res[i].price}`)}
-userPrompt();
+    userPrompt();
     })
 }
 
@@ -54,14 +55,19 @@ function userPrompt() {
         }
     ])
     .then(function(answer) {
-        connection.query("SELECT * FROM products WHERE ")
-        if (res[answer.id].stock_quantity >= answer.quantity) {
+        connection.query(`SELECT id, product_name, price, stock_quantity FROM products WHERE id = ${answer.id}`, function(err, res) {
+            if (err) throw err;
+        
+        if (parseInt(res[0].stock_quantity) >= parseInt(answer.quantity)) {
+            totalCost = answer.quantity * res[0].price
             console.log(`
-Congratulations. You've purchased ${answer.quantity} ${res[answer.id].product_name}(s)`)
+Congratulations. You've purchased ${answer.quantity} ${res[0].product_name}(s). Your total is $${totalCost}`)
         }
         else {
             console.log(`
-Insufficient Quantity. We only have ${res[answer.id].stock_quantity} ${res[answer.id].product_name} in stock.`)
+Insufficient Quantity. We only have ${res[0].stock_quantity} ${res[0].product_name} in stock.`);
+            userPrompt();
         }
+    })
     })
 }
