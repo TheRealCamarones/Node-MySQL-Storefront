@@ -72,6 +72,8 @@ Insufficient Quantity. We only have ${res[0].stock_quantity} ${res[0].product_na
             })
         })       
 }
+
+// we'll pass the res and answer objects down into this function so they carry down
 function sellInventory(res, answer) {
             console.log(`
 Congratulations. You've purchased ${answer.quantity} ${res[0].product_name}(s). Your total is $${totalCost}`)
