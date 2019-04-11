@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+var currInv;
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -49,10 +50,10 @@ function managerPrompt() {
 
 function displayInventory() {
     // query the database to display all of the products and their info
-    connection.query(`SELECT id, product_name, price, stock_quantity FROM products`, function(err, res) {
+    connection.query(`SELECT id, product_name, price, stock_quantity FROM products`, function (err, res) {
         if (err) throw err;
         // run through the results and display them to the console
-        res.forEach(function(product) {
+        res.forEach(function (product) {
             console.log(`
 ------------------------------------------------------------------------------------------
 ID: ${product.id} | ${product.product_name} | Price: ${product.price} | Quantity ${product.stock_quantity}`)
@@ -64,10 +65,10 @@ ID: ${product.id} | ${product.product_name} | Price: ${product.price} | Quantity
 
 function lowInventory() {
     // query the database for products with inventory less than 5
-    connection.query(`SELECT id, product_name, price, stock_quantity FROM products WHERE stock_quantity < 5`, function(err, res) {
+    connection.query(`SELECT id, product_name, price, stock_quantity FROM products WHERE stock_quantity < 5`, function (err, res) {
         if (err) throw err;
         // run through results and display to the console
-        res.forEach(function(product) {
+        res.forEach(function (product) {
             console.log(`
 ------------------------------------------------------------------------------------------
 ID: ${product.id} | ${product.product_name} | Price: ${product.price} | Quantity ${product.stock_quantity}`)
@@ -77,6 +78,46 @@ ID: ${product.id} | ${product.product_name} | Price: ${product.price} | Quantity
     endConnection();
 }
 
+function resupply() {
+    connection.query(`SELECT * FROM products`, function (err, response) {
+        if (err) throw err;
+        inquirer
+            .prompt([
+                {
+                    name: "id",
+                    type: "input",
+                    message: "Which id has low inventory that we should increase?",
+                    validate: function (value) {
+                        if (isNaN(value) === false) {
+                            return true;
+                        }
+                        return false;
+                    }
+                },
+                {
+                    name: "quantity",
+                    type: "input",
+                    message: "How much would you like to increase the inventory?",
+                    validate: function (value) {
+                        if (isNaN(value) === false) {
+                            return true;
+                        }
+                        return false;
+                    }
+                }
+            ])
+            .then(function (answer) {
+                connection.query(`UPDATE products SET ? WHERE id = ${answer.id}`,
+                [
+                    {
+                        stock_quantity: parseInt(response[0].stock_quantity) + parseInt(answer.quantity),
+                    },
+                ]);
+                console.log("Inventory Added!")
+                endConnection();
+            });
+    });
+};
 
 
 function endConnection() {
