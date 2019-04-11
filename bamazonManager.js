@@ -47,6 +47,20 @@ function managerPrompt() {
         })
 }
 
+function displayInventory() {
+    // query the database to display all of the products and their info
+    connection.query(`SELECT id, product_name, price, stock_quantity FROM products`, function(err, res) {
+        if (err) throw err;
+        // run through the results and display them to the console
+        res.forEach(function(product) {
+            console.log(`
+------------------------------------------------------------------------------------------
+ID: ${product.id} | ${product.product_name} | Price: ${product.price} | Quantity ${product.stock_quantity}`)
+        })
+    })
+    endConnection();
+}
+
 
 
 function endConnection() {
