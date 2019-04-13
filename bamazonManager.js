@@ -110,7 +110,9 @@ function resupply() {
                 connection.query(`UPDATE products SET ? WHERE id = ${answer.id}`,
                 [
                     {
-                        stock_quantity: parseInt(response[0].stock_quantity) + parseInt(answer.quantity),
+                        // was having an issue getting this math to work
+                        //  because the position of the id I need isn't in it's own id number location in the array
+                        stock_quantity: parseInt(response[answer.id - 1].stock_quantity) + parseInt(answer.quantity)
                     },
                 ]);
                 console.log("Inventory Added!")
