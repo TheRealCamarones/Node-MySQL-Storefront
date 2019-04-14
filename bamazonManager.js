@@ -161,7 +161,7 @@ function createProduct() {
             connection.query(`INSERT INTO products (product_name, department_name, price, stock_quantity)
             VALUES("${answer.name}", "${answer.dept}", ${answer.price}, ${answer.quantity})`, function(err, res) {
                 if (err) throw err;
-                console.log(`New Product Added! ${answer.quantity} units of ${answer.name} at ${answer.price} each!`)
+                console.log(`New Product Added! ${answer.quantity} units of ${answer.name} at $${answer.price} each!`)
             })
             endConnection();
         });
