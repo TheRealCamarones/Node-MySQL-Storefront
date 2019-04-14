@@ -121,6 +121,52 @@ function resupply() {
     });
 };
 
+function createProduct() {
+    inquirer
+        .prompt([
+            {
+                name: "name",
+                type: "input",
+                message: "What is the name of the product you would like to add?"
+            },
+            {
+                name: "dept",
+                type: "input",
+                message: "Which department is the product a part of?"
+            },
+            {
+                name: "price",
+                type: "input",
+                message: "What should the price be?",
+                validate: function (value) {
+                    if (isNaN(value) === false) {
+                        return true;
+                    }
+                    return false;
+                }
+            },
+            {
+                name: "quantity",
+                input: "input",
+                message: "How much stock should we start out with?",
+                validate: function (value) {
+                    if (isNaN(value) === false) {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+        ])
+        .then(function(answer) {
+            connection.query(`INSERT INTO products (product_name, department_name, price, stock_quantity)
+            VALUES("${answer.name}", "${answer.dept}", ${answer.price}, ${answer.quantity})`, function(err, res) {
+                if (err) throw err;
+                console.log(`New Product Added! ${answer.quantity} units of ${answer.name} at ${answer.price} each!`)
+            })
+            endConnection();
+        });
+}
+
 
 function endConnection() {
     connection.end();
