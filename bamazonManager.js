@@ -56,7 +56,7 @@ function displayInventory() {
         res.forEach(function (product) {
             console.log(`
 ------------------------------------------------------------------------------------------
-ID: ${product.id} | ${product.product_name} | Price: ${product.price} | Quantity ${product.stock_quantity}`)
+ID: ${product.id} | ${product.product_name} | Price: $${product.price} | Quantity ${product.stock_quantity}`)
         })
     })
     // end connection here for now, trying to decide how I want these all to move together
